@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
+const pageRouter = require('./routes/pages')
 const app = express();
 
 app.use('/images', express.static(__dirname + '/public/images'));
@@ -55,9 +56,7 @@ app.get('/', (req, res) => {
     });
 });
 
-app.get('/about', (req, res) => {
-    res.render('about.ejs', {title: 'aboutPage'});
-});
+app.use('/', pageRouter);
 
 app.listen(3000, () => {
     console.log('Example app listening on port 3000!')
