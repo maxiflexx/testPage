@@ -4,9 +4,11 @@ const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
 const app = express();
 
+app.use('/images', express.static(__dirname + '/public/images'));
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist'));
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
+app.use('/css', express.static(__dirname + '/public/static'))
 
 app.set('view engine', 'ejs');
 app.set('views', [
