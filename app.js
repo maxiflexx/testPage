@@ -88,9 +88,20 @@ app.use('/', pageRouter);
 
 // 존재하지 않는 페이지에 접근했을 때의 에러처리
 app.use((req, res) => {
+    // logger.error('404 not found')
     res.status(404).send('Sorry cant find that!');
 });
 
+app.use((err, req, res) => {
+    if (err) {
+        // logger.error(err);
+        res.status(500).send('Something broke!');    
+    }
+});
+
 app.listen(3000, () => {
+    // let logger = require("./utils/logger");
+
+    // logger.error('test');
     console.log('Example app listening on port 3000!');
 });
