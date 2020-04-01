@@ -6,9 +6,15 @@ const helmet = require('helmet');
 const compression = require('compression');
 const pageRouter = require('./routes/pages');
 const fs = require('fs');
+const log4js = require('log4js');
+const favicon = require('serve-favicon');
 const app = express();
+log4js.configure(__dirname + '/config/log4js.json')
+
+const log = log4js.getLogger('app');
 
 app.use(helmet()); // 보안 이슈
+app.use(log4js.connectLogger(log4js.getLogger('http'), { level: 'auto' })); // 모든 접근에 대해 기록
 
 // 경로 설정 
 app.use('/images', express.static(__dirname + '/public/images'));
@@ -34,14 +40,16 @@ app.use(bodyParser.urlencoded({extended:false}));
 
 app.use(compression()); // 전송되는 데이터 압축
 
+app.use(favicon(path.join(__dirname, 'public/images', 'favicon.ico')));
+
 // 모든 요청에 대해 favicon.ico 무시
-app.get('*', (req, res, next) => {
-    if (req.originalUrl === '/favicon.ico') {
-        res.status(204).json({nope: true});
-    } else {
-        next();
-    }
-})
+// app.get('*', (req, res, next) => {
+//     if (req.originalUrl === '/favicon.ico') {
+//         res.status(204).json({nope: true});
+//     } else {
+//         next();
+//     }
+// })
 
 // 모든 요청에 대해 req.list는 pages의 파일 목록을 의미
 app.get('*', (req, res, next) => {
@@ -86,22 +94,28 @@ app.get('/', (req, res) => {
 
 app.use('/', pageRouter);
 
-// 존재하지 않는 페이지에 접근했을 때의 에러처리
-app.use((req, res) => {
-    // logger.error('404 not found')
-    res.status(404).send('Sorry cant find that!');
+app.use((req, res, next) => {
+    let err = new Error('Not Found!');
+    err.status = 404;
+    next(err);
+})
+
+app.use((err, req, res, next) => {
+    log.error('Something went wrong:', err);
+    res.status(err.status || 500);
+    res.send(`
+        <title>Error</title>
+        <h1>${err.message}</h1>
+        <h2>${err.status}</h2>
+        <pre>${err.stack}</pre>
+        `)
 });
 
-app.use((err, req, res) => {
-    if (err) {
-        // logger.error(err);
-        res.status(500).send('Something broke!');    
-    }
-});
+// 존재하지 않는 페이지에 접근했을 때의 에러처리
+// app.use((req, res) => {
+//     res.status(404).send('Sorry cant find that!');
+// });
 
 app.listen(3000, () => {
-    // let logger = require("./utils/logger");
-
-    // logger.error('test');
     console.log('Example app listening on port 3000!');
 });

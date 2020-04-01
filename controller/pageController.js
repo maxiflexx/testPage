@@ -7,7 +7,9 @@ class PageController {
         if(req.list.indexOf(pageName) !== -1) {
             res.render(pageName, {title:filteredId});
         } else {
-            next();
+            let err = new Error('Something Broke!');
+            err.status = 500;
+            next(err);
         }
     };
 };
