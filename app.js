@@ -22,7 +22,7 @@ app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist'));
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 app.use('/css', express.static(__dirname + '/public/static'));
-
+app.use('/d3', express.static(__dirname + '/d3'));
 // ejs 설정
 app.set('view engine', 'ejs');
 app.set('views', [
@@ -74,7 +74,17 @@ app.get('/', (req, res) => {
     });
 });
 
+app.get('/FTSE.csv', (req, res) => {
+    fs.readFile('./views/FTSE.csv', 'utf8', (err, data) => {
+        if (err) {
+            console.log(err)
+        }
+        res.status(200).send(data);
+    });
+});
 app.use('/', pageRouter);
+
+
 
 app.use((req, res, next) => {
     let err = new Error('Not Found!');
@@ -98,6 +108,6 @@ app.use((err, req, res, next) => {
 //     res.status(404).send('Sorry cant find that!');
 // });
 
-app.listen(3000, () => {
+app.listen(3001, () => {
     console.log('Example app listening on port 3000!');
 });
