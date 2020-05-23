@@ -1,3 +1,4 @@
+<!-- 배너 -->
 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner" style="max-height: 300px; overflow: hidden;">
         <div class="carousel-item active">
@@ -19,231 +20,277 @@
         <span class="sr-only">Next</span>
     </a>
 </div>
+<!-- 배너 끝 -->
 
 <main style="padding: 2rem;">
-  <div class="text-center" id="ex4">
-        <h3>봉 차트</h3>
-        <svg id="container"></svg>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
-        <script>
-function drawChart() {
-
-d3.csv("FTSE.csv").then(function(prices) {
-    
-    const months = {0 : 'Jan', 1 : 'Feb', 2 : 'Mar', 3 : 'Apr', 4 : 'May', 5 : 'Jun', 6 : 'Jul', 7 : 'Aug', 8 : 'Sep', 9 : 'Oct', 10 : 'Nov', 11 : 'Dec'}
-
-    var dateFormat = d3.timeParse("%Y-%m-%d");
-    for (var i = 0; i < prices.length; i++) {
+<!-- 화폐별 간단한 그래프 -->
+<div class="container-fluid text-center">
+  <h4 class="text-left">오늘의 주요 시세</h4>
+  <div class="row" style="padding-top: 2rem;">
+    <div class="row-md-3 mx-auto" id="BTCGraph">
+      <p class="text-left" id="typeBTC" style="margin-bottom: -0.3rem; font-size: 0.8rem;"></p>
+      <p class="text-left" id="priceBTC"></p>
+      <script>
+        // set the dimensions and margins of the graph
+        var margin = {top: 10, right: 30, bottom: 30, left: 10},
+              width = 280 - margin.left - margin.right,
+              height = 230 - margin.top - margin.bottom;
+          
+        // append the svg object to the body of the page
+        var svg1 = d3.select("#BTCGraph")
+          .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+            .attr("transform",
+                  "translate(" + margin.left + "," + margin.top + ")");
         
-        prices[i]['Date'] = dateFormat(prices[i]['Date'])
-    }
-
-    const margin = {top: 15, right: 65, bottom: 205, left: 50},
-    w = 1000 - margin.left - margin.right,
-    h = 625 - margin.top - margin.bottom;
-
-    var svg = d3.select("#container")
-                    .attr("width", w + margin.left + margin.right)
-                    .attr("height", h + margin.top + margin.bottom)
-                    .append("g")
-                    .attr("transform", "translate(" +margin.left+ "," +margin.top+ ")");
-
-    let dates = _.map(prices, 'Date');
-    
-    var xmin = d3.min(prices.map(r => r.Date.getTime()));
-    var xmax = d3.max(prices.map(r => r.Date.getTime()));
-    var xScale = d3.scaleLinear().domain([-1, dates.length])
-                    .range([0, w])
-    var xDateScale = d3.scaleQuantize().domain([0, dates.length]).range(dates)
-    let xBand = d3.scaleBand().domain(d3.range(-1, dates.length)).range([0, w]).padding(0.3)
-    var xAxis = d3.axisBottom()
-                              .scale(xScale)
-                            .tickFormat(function(d) {
-                                  d = dates[d]
-                                    hours = d.getHours()
-                                    minutes = (d.getMinutes()<10?'0':'') + d.getMinutes() 
-                                    amPM = hours < 13 ? 'am' : 'pm'
-                                    return hours + ':' + minutes + amPM + ' ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear()
-                                });
-    
-    svg.append("rect")
-                .attr("id","rect")
-                .attr("width", w)
-                .attr("height", h)
-                .style("fill", "none")
-                .style("pointer-events", "all")
-                .attr("clip-path", "url(#clip)")
-    
-    var gX = svg.append("g")
-                .attr("class", "axis x-axis") //Assign "axis" class
-                .attr("transform", "translate(0," + h + ")")
-                .call(xAxis)
-    
-    gX.selectAll(".tick text")
-      .call(wrap, xBand.bandwidth())
-
-    var ymin = d3.min(prices.map(r => r.Low));
-    var ymax = d3.max(prices.map(r => r.High));
-    var yScale = d3.scaleLinear().domain([ymin, ymax]).range([h, 0]).nice();
-    var yAxis = d3.axisLeft()
-                  .scale(yScale)
-    
-    var gY = svg.append("g")
-                .attr("class", "axis y-axis")
-                .call(yAxis);
-    
-    var chartBody = svg.append("g")
-                .attr("class", "chartBody")
-                .attr("clip-path", "url(#clip)");
-    
-    // draw rectangles
-    let candles = chartBody.selectAll(".candle")
-       .data(prices)
-       .enter()
-       .append("rect")
-       .attr('x', (d, i) => xScale(i) - xBand.bandwidth())
-       .attr("class", "candle")
-       .attr('y', d => yScale(Math.max(d.Open, d.Close)))
-       .attr('width', xBand.bandwidth())
-       .attr('height', d => (d.Open === d.Close) ? 1 : yScale(Math.min(d.Open, d.Close))-yScale(Math.max(d.Open, d.Close)))
-       .attr("fill", d => (d.Open === d.Close) ? "silver" : (d.Open > d.Close) ? "red" : "green")
-    
-    // draw high and low
-    let stems = chartBody.selectAll("g.line")
-       .data(prices)
-       .enter()
-       .append("line")
-       .attr("class", "stem")
-       .attr("x1", (d, i) => xScale(i) - xBand.bandwidth()/2)
-       .attr("x2", (d, i) => xScale(i) - xBand.bandwidth()/2)
-       .attr("y1", d => yScale(d.High))
-       .attr("y2", d => yScale(d.Low))
-       .attr("stroke", d => (d.Open === d.Close) ? "white" : (d.Open > d.Close) ? "red" : "green");
-    
-    svg.append("defs")
-       .append("clipPath")
-       .attr("id", "clip")
-       .append("rect")
-       .attr("width", w)
-       .attr("height", h)
-    
-    const extent = [[0, 0], [w, h]];
-    
-    var resizeTimer;
-    var zoom = d3.zoom()
-      .scaleExtent([1, 100])
-      .translateExtent(extent)
-      .extent(extent)
-      .on("zoom", zoomed)
-      .on('zoom.end', zoomend);
-    
-    svg.call(zoom)
-
-    function zoomed() {
+        //Read the data
+        d3.csv('BTC.csv',
         
-        var t = d3.event.transform;
-        let xScaleZ = t.rescaleX(xScale);
+          // When reading the csv, I must format variables:
+          function(d){
+            return { date : d3.timeParse("%Y-%m-%d")(d.Date), value : d.Open }
+          },
         
-        let hideTicksWithoutLabel = function() {
-            d3.selectAll('.xAxis .tick text').each(function(d){
-                if(this.innerHTML === '') {
-                this.parentNode.style.display = 'none'
-                }
-            })
-        }
-
-        gX.call(
-            d3.axisBottom(xScaleZ).tickFormat((d, e, target) => {
-                    if (d >= 0 && d <= dates.length-1) {
-                d = dates[d]
-                hours = d.getHours()
-                minutes = (d.getMinutes()<10?'0':'') + d.getMinutes() 
-                amPM = hours < 13 ? 'am' : 'pm'
-                return hours + ':' + minutes + amPM + ' ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear()
-                }
-            })
-        )
-
-        candles.attr("x", (d, i) => xScaleZ(i) - (xBand.bandwidth()*t.k)/2)
-               .attr("width", xBand.bandwidth()*t.k);
-        stems.attr("x1", (d, i) => xScaleZ(i) - xBand.bandwidth()/2 + xBand.bandwidth()*0.5);
-        stems.attr("x2", (d, i) => xScaleZ(i) - xBand.bandwidth()/2 + xBand.bandwidth()*0.5);
-
-        hideTicksWithoutLabel();
-
-        gX.selectAll(".tick text")
-        .call(wrap, xBand.bandwidth())
-
-    }
-
-    function zoomend() {
-        var t = d3.event.transform;
-        let xScaleZ = t.rescaleX(xScale);
-        clearTimeout(resizeTimer)
-        resizeTimer = setTimeout(function() {
-
-        var xmin = new Date(xDateScale(Math.floor(xScaleZ.domain()[0])))
-            xmax = new Date(xDateScale(Math.floor(xScaleZ.domain()[1])))
-            filtered = _.filter(prices, d => ((d.Date >= xmin) && (d.Date <= xmax)))
-            minP = +d3.min(filtered, d => d.Low)
-            maxP = +d3.max(filtered, d => d.High)
-            buffer = Math.floor((maxP - minP) * 0.1)
-
-        yScale.domain([minP - buffer, maxP + buffer])
-        candles.transition()
-               .duration(800)
-               .attr("y", (d) => yScale(Math.max(d.Open, d.Close)))
-               .attr("height",  d => (d.Open === d.Close) ? 1 : yScale(Math.min(d.Open, d.Close))-yScale(Math.max(d.Open, d.Close)));
-               
-        stems.transition().duration(800)
-             .attr("y1", (d) => yScale(d.High))
-             .attr("y2", (d) => yScale(d.Low))
+          // Now I can use this dataset:
+          function(data) {
         
-        gY.transition().duration(800).call(d3.axisLeft().scale(yScale));
-
-        }, 500)
+            // Add X axis --> it is a date format
+            var x = d3.scaleTime()
+              .domain(d3.extent(data, function(d) { return d.date; }))
+              .range([ 0, width ]);
+            svg1.append("g")
+              .attr("transform", "translate(0," + height + ")")
+              .call(d3.axisBottom(x).tickFormat(function(d) { return "" }).tickSize(0));
         
-    }
-});
-}
-
-function wrap(text, width) {
-text.each(function() {
-  var text = d3.select(this),
-      words = text.text().split(/\s+/).reverse(),
-      word,
-      line = [],
-      lineNumber = 0,
-      lineHeight = 1.1, // ems
-      y = text.attr("y"),
-      dy = parseFloat(text.attr("dy")),
-      tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
-  while (word = words.pop()) {
-    line.push(word);
-    tspan.text(line.join(" "));
-    if (tspan.node().getComputedTextLength() > width) {
-      line.pop();
-      tspan.text(line.join(" "));
-      line = [word];
-      tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
-    }
-  }
-});
-}
-
-drawChart();
-        </script>
+            // Add Y axis
+            var y = d3.scaleLinear()
+              .domain([0, d3.max(data, function(d) { return +d.value; })])
+              .range([ height, 0 ]);
+            svg1.append("g")
+              .call(d3.axisLeft(y).tickFormat(function(d) { return "" }).tickSize(0));
+        
+            // Add the line
+            svg1.append("path")
+              .datum(data)
+              .attr("fill", "none")
+              .attr("stroke", "steelblue")
+              .attr("stroke-width", 1.5)
+              .attr("d", d3.line()
+                .x(function(d) { return x(d.date) })
+                .y(function(d) { return y(d.value) })
+                )
+            var p1 = d3.select("#typeBTC")
+              .text(`비트코인(BTC/KRW)`)
+            var p2 = d3.select("#priceBTC")  
+              .text(`현재가: ${data[99].value}원`)
+        })    
+      </script>
     </div>
+    <div class="row-md-3 mx-auto" id="ETHGraph">
+      <p class="text-left" id="typeETH" style="margin-bottom: -0.3rem; font-size: 0.8rem;"></p>
+      <p class="text-left" id="priceETH"></p>
+      <script>
+        // set the dimensions and margins of the graph
+        var margin = {top: 10, right: 30, bottom: 30, left: 10},
+              width = 280 - margin.left - margin.right,
+              height = 230 - margin.top - margin.bottom;
+          
+        // append the svg object to the body of the page
+        var svg2 = d3.select("#ETHGraph")
+          .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+            .attr("transform",
+                  "translate(" + margin.left + "," + margin.top + ")");
+        
+        //Read the data
+        d3.csv('ETH.csv',
+        
+          // When reading the csv, I must format variables:
+          function(d){
+            return { date : d3.timeParse("%Y-%m-%d")(d.Date), value : d.Open }
+          },
+        
+          // Now I can use this dataset:
+          function(data) {
+        
+            // Add X axis --> it is a date format
+            var x = d3.scaleTime()
+              .domain(d3.extent(data, function(d) { return d.date; }))
+              .range([ 0, width ]);
+            svg2.append("g")
+              .attr("transform", "translate(0," + height + ")")
+              .call(d3.axisBottom(x).tickFormat(function(d) { return "" }).tickSize(0));
+        
+            // Add Y axis
+            var y = d3.scaleLinear()
+              .domain([0, d3.max(data, function(d) { return +d.value; })])
+              .range([ height, 0 ]);
+            svg2.append("g")
+              .call(d3.axisLeft(y).tickFormat(function(d) { return "" }).tickSize(0));
+        
+            // Add the line
+            svg2.append("path")
+              .datum(data)
+              .attr("fill", "none")
+              .attr("stroke", "steelblue")
+              .attr("stroke-width", 1.5)
+              .attr("d", d3.line()
+                .x(function(d) { return x(d.date) })
+                .y(function(d) { return y(d.value) })
+                )
+            var p1 = d3.select("#typeETH")
+              .text(`이더리움(ETH/KRW)`)
+            var p2 = d3.select("#priceETH")  
+              .text(`현재가: ${data[99].value}원`)
+        
+        })    
+      </script>
+    </div>
+    <div class="row-md-3 mx-auto" id="EOSGraph">
+      <p class="text-left" id="typeEOS" style="margin-bottom: -0.3rem; font-size: 0.8rem;"></p>
+      <p class="text-left" id="priceEOS"></p>
 
+      <script>
+        // set the dimensions and margins of the graph
+        var margin = {top: 10, right: 30, bottom: 30, left: 10},
+              width = 280 - margin.left - margin.right,
+              height = 230 - margin.top - margin.bottom;
+          
+        // append the svg object to the body of the page
+        var svg3 = d3.select("#EOSGraph")
+          .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+            .attr("transform",
+                  "translate(" + margin.left + "," + margin.top + ")");
+        
+        //Read the data
+        d3.csv('EOS.csv',
+        
+          // When reading the csv, I must format variables:
+          function(d){
+            return { date : d3.timeParse("%Y-%m-%d")(d.Date), value : d.Open }
+          },
+        
+          // Now I can use this dataset:
+          function(data) {
+        
+            // Add X axis --> it is a date format
+            var x = d3.scaleTime()
+              .domain(d3.extent(data, function(d) { return d.date; }))
+              .range([ 0, width ]);
+            svg3.append("g")
+              .attr("transform", "translate(0," + height + ")")
+              .call(d3.axisBottom(x).tickFormat(function(d) { return "" }).tickSize(0));
+        
+            // Add Y axis
+            var y = d3.scaleLinear()
+              .domain([0, d3.max(data, function(d) { return +d.value; })])
+              .range([ height, 0 ]);
+            svg3.append("g")
+              .call(d3.axisLeft(y).tickFormat(function(d) { return "" }).tickSize(0));
+        
+            // Add the line
+            svg3.append("path")
+              .datum(data)
+              .attr("fill", "none")
+              .attr("stroke", "steelblue")
+              .attr("stroke-width", 1.5)
+              .attr("d", d3.line()
+                .x(function(d) { return x(d.date) })
+                .y(function(d) { return y(d.value) })
+                )
+            var p1 = d3.select("#typeEOS")
+              .text(`이오스(EOS/KRW)`)
+            var p2 = d3.select("#priceEOS")  
+              .text(`현재가: ${data[99].value}원`)
+        
+        })    
+      </script>
+    </div>
+    <div class="row-md-3 mx-auto" id="XRPGraph">
+      <p class="text-left" id="typeXRP" style="margin-bottom: -0.3rem; font-size: 0.8rem;"></p>
+      <p class="text-left" id="priceXRP"></p>
+
+      <script>
+        // set the dimensions and margins of the graph
+        var margin = {top: 10, right: 30, bottom: 30, left: 10},
+              width = 280 - margin.left - margin.right,
+              height = 230 - margin.top - margin.bottom;
+          
+        // append the svg object to the body of the page
+        var svg4 = d3.select("#XRPGraph")
+          .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+            .attr("transform",
+                  "translate(" + margin.left + "," + margin.top + ")");
+        
+        //Read the data
+        d3.csv('XRP.csv',
+        
+          // When reading the csv, I must format variables:
+          function(d){
+            return { date : d3.timeParse("%Y-%m-%d")(d.Date), value : d.Open }
+          },
+        
+          // Now I can use this dataset:
+          function(data) {
+        
+            // Add X axis --> it is a date format
+            var x = d3.scaleTime()
+              .domain(d3.extent(data, function(d) { return d.date; }))
+              .range([ 0, width ]);
+            svg4.append("g")
+              .attr("transform", "translate(0," + height + ")")
+              .call(d3.axisBottom(x).tickFormat(function(d) { return "" }).tickSize(0));
+        
+            // Add Y axis
+            var y = d3.scaleLinear()
+              .domain([0, d3.max(data, function(d) { return +d.value; })])
+              .range([ height, 0 ]);
+            svg4.append("g")
+              .call(d3.axisLeft(y).tickFormat(function(d) { return "" }).tickSize(0));
+        
+            // Add the line
+            svg4.append("path")
+              .datum(data)
+              .attr("fill", "none")
+              .attr("stroke", "steelblue")
+              .attr("stroke-width", 1.5)
+              .attr("d", d3.line()
+                .x(function(d) { return x(d.date) })
+                .y(function(d) { return y(d.value) })
+                )
+            var p1 = d3.select("#typeXRP")
+              .text(`리플(XRP/KRW)`)
+            var p2 = d3.select("#priceXRP")  
+              .text(`현재가: ${data[99].value}원`)
+    
+        })    
+      </script>
+    </div>
+  </div>
+</div>
+<!-- 화폐별 간단한 그래프 끝 -->
+
+<!-- 화폐 정보를 담은 테이블 -->
   <div style="padding-top: 2rem">
     <h4>코인 테이블</h4>
     <table class="table table-striped">
       <thead>
         <tr>
-          <th scope="col">#</th>
-          <th scope="col">First</th>
-          <th scope="col">Last</th>
-          <th scope="col">Handle</th>
+          <th scope="col">코인명</th>
+          <th scope="col">시가</th>
+          <th scope="col">최고가</th>
+          <th scope="col">최저가</th>
+          <th scope="col">종가</th>
         </tr>
       </thead>
       <tbody>
@@ -252,23 +299,28 @@ drawChart();
           <td>Mark</td>
           <td>Otto</td>
           <td>@mdo</td>
+          <td>@mdo</td>
         </tr>
         <tr>
           <th scope="row">2</th>
           <td>Jacob</td>
           <td>Thornton</td>
           <td>@fat</td>
+          <td>@mdo</td>
         </tr>
         <tr>
           <th scope="row">3</th>
           <td>Larry</td>
           <td>the Bird</td>
           <td>@twitter</td>
+          <td>@mdo</td>
         </tr>
       </tbody>
     </table>
   </div>
+<!-- 화폐 정보를 담은 테이블 끝 -->
 
+<!-- 암호화폐 소식란 -->
   <div class="jumbotron" style="padding-right: 4rem;">
     <h1>관련 소식 내용 등</h1>
     <p>서브 타이틀</p>
@@ -282,10 +334,14 @@ drawChart();
             <li><%= drink.name %> - <%= drink.drunkness %></li>
         <% }); %>
     </ul>
-</div>
+  </div>
+<!-- 암호화폐 소식란 끝 -->
 
-<div class="text-center" style="padding: 2rem">
-  <p><h5>Nodejs를 이용한 모의 암호화폐 거래소 프로젝트입니다.</h5></p>
-  <img src="/images/BitFlex-logo.png" alt="">
-</div>
+<!-- 프로젝트 설명 -->
+  <div class="text-center" style="padding: 2rem">
+    <p><h5>Nodejs를 이용한 모의 암호화폐 거래소 프로젝트입니다.</h5></p>
+    <img src="/images/BitFlex-logo.png" alt="">
+  </div>
+<!-- 프로젝트 설명 끝 -->
+
 </main>

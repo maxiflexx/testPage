@@ -74,8 +74,35 @@ app.get('/', (req, res) => {
     });
 });
 
-app.get('/FTSE.csv', (req, res) => {
-    fs.readFile('./views/FTSE.csv', 'utf8', (err, data) => {
+app.get('/BTC.csv', (req, res) => {
+    fs.readFile('./data/BTC.csv', 'utf8', (err, data) => {
+        if (err) {
+            console.log(err)
+        }
+        res.status(200).send(data);
+    });
+});
+
+app.get('/EOS.csv', (req, res) => {
+    fs.readFile('./data/EOS.csv', 'utf8', (err, data) => {
+        if (err) {
+            console.log(err)
+        }
+        res.status(200).send(data);
+    });
+});
+
+app.get('/ETH.csv', (req, res) => {
+    fs.readFile('./data/ETH.csv', 'utf8', (err, data) => {
+        if (err) {
+            console.log(err)
+        }
+        res.status(200).send(data);
+    });
+});
+
+app.get('/XRP.csv', (req, res) => {
+    fs.readFile('./data/XRP.csv', 'utf8', (err, data) => {
         if (err) {
             console.log(err)
         }
@@ -108,6 +135,6 @@ app.use((err, req, res, next) => {
 //     res.status(404).send('Sorry cant find that!');
 // });
 
-app.listen(3001, () => {
+app.listen(3000, () => {
     console.log('Example app listening on port 3000!');
 });
