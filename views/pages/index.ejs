@@ -84,7 +84,7 @@
             var p1 = d3.select("#typeBTC")
               .text(`비트코인(BTC/KRW)`)
             var p2 = d3.select("#priceBTC")  
-              .text(`현재가: ${data[99].value}원`)
+              .text(`현재가: ${data[0].value}원`)
         })    
       </script>
     </div>
@@ -145,7 +145,7 @@
             var p1 = d3.select("#typeETH")
               .text(`이더리움(ETH/KRW)`)
             var p2 = d3.select("#priceETH")  
-              .text(`현재가: ${data[99].value}원`)
+              .text(`현재가: ${data[0].value}원`)
         
         })    
       </script>
@@ -208,7 +208,7 @@
             var p1 = d3.select("#typeEOS")
               .text(`이오스(EOS/KRW)`)
             var p2 = d3.select("#priceEOS")  
-              .text(`현재가: ${data[99].value}원`)
+              .text(`현재가: ${data[0].value}원`)
         
         })    
       </script>
@@ -271,7 +271,7 @@
             var p1 = d3.select("#typeXRP")
               .text(`리플(XRP/KRW)`)
             var p2 = d3.select("#priceXRP")  
-              .text(`현재가: ${data[99].value}원`)
+              .text(`현재가: ${data[0].value}원`)
     
         })    
       </script>
@@ -294,30 +294,52 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-          <td>@mdo</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-          <td>@mdo</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Larry</td>
-          <td>the Bird</td>
-          <td>@twitter</td>
-          <td>@mdo</td>
-        </tr>
+        <tr id="BTCInfo"></tr>
+        <tr id="ETHInfo"></tr>
+        <tr id="EOSInfo"></tr>
+        <tr id="XRPInfo"></tr>
       </tbody>
     </table>
   </div>
+  <script type="text/javascript">
+    axios.get('BTC.csv')
+      .then((result) => {
+        writeData(result.data, "BTC");
+      }).catch((err) => {
+        alert(err)
+      })
+    
+    axios.get('ETH.csv')
+      .then((result) => {
+        writeData(result.data, "ETH");
+      }).catch((err) => {
+        alert(err)
+      })
+    
+    axios.get('EOS.csv')
+      .then((result) => {
+        writeData(result.data, "EOS");
+      }).catch((err) => {
+        alert(err)
+      })
+    
+    axios.get('XRP.csv')
+      .then((result) => {
+        writeData(result.data, "XRP");
+      }).catch((err) => {
+        alert(err)
+      })
+    
+    function writeData(data, currency) {
+      var allRows = data.split(/\r?\n|\r/);
+      var todayData = allRows[1].split(',');
+      var row = `<td>${currency}/KRW</td>`;
+      for (var i = 1; i < todayData.length; i++) {
+        row += `<td>${todayData[i]}</td>`
+      };
+      $(`#${currency}Info`).append(row);
+    }
+  </script>
 <!-- 화폐 정보를 담은 테이블 끝 -->
 
 <!-- 암호화폐 소식란 -->
