@@ -22,20 +22,76 @@
 </div>
 <!-- 배너 끝 -->
 
+<!-- 암호화폐 소식란 -->
+<div class="container-fluid">
+  <div class="row" style="padding-top:1rem; padding-bottom: 1rem;">
+    <div class="col-md-2" style="padding-left: 4rem;">
+      <div style="font-size: 13px; font-weight: bold">암호화폐 뉴스</div>
+      <div style="font-size: 12px; color:gray">전체보기 &#10140;</div>
+    </div>
+    <div class="col-md-4" id="currencyNews">
+      <!-- <div style="font-size: 13px;">
+        &#9656;	 Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+      </div>
+      <div style="font-size: 13px;">
+        &#9656;	 Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+      </div> -->
+    </div>
+    <div class="col-md-2" style="padding-left: 4rem;">
+      <div style="font-size: 13px; font-weight: bold">암호화폐 분석</div>
+      <div style="font-size: 12px; color:gray">전체보기 &#10140;</div>
+    </div>
+    <div class="col-md-4" id="currencyAnalysis">
+    </div>
+  </div>
+  <script type="text/javascript">
+    axios.post('/feed/news')
+      .then((res) => {
+          writeFeed(res.data, '#currencyNews');
+      }).catch((err) => {
+          alert(err);
+      })
+    
+    axios.post('/feed/analysis')
+      .then((res) => {
+        writeFeed(res.data, '#currencyAnalysis');
+      }).catch((err) => {
+        alert(err);
+      })
+
+    function writeFeed(items, feedId) {
+      for (var i = 0; i < 2; i++) {
+        var item = ''
+        item += `
+          <a href="${items[i].link[0]}" style="color: black;">
+            <div style="font-size: 13px;">
+              &#9656;	 ${items[i].title[0]}
+            </div>
+          </a>
+        `
+        $(feedId).append(item);
+      }
+    }
+  </script>
+</div>
+<hr>
+<!-- 암호화폐 소식란 끝 -->
+
 <main style="padding: 2rem;">
 <!-- 화폐별 간단한 그래프 -->
 <div class="container-fluid text-center">
-  <h4 class="text-left">오늘의 주요 시세</h4>
+  <!-- <h4 class="text-left">오늘의 주요 시세</h4> -->
+  <p class="text-left" style="font-size: 20px; font-weight: bold;">오늘의 주요 시세</p>
   <div class="row" style="padding-top: 2rem;">
     <div class="row-md-3 mx-auto" id="BTCGraph">
-      <p class="text-left" id="typeBTC" style="margin-bottom: -0.3rem; font-size: 0.8rem;"></p>
-      <p class="text-left" id="priceBTC"></p>
+      <p class="text-left" id="typeBTC" style="margin-bottom: -0.05rem; font-size: 0.8rem; color:gray;"></p>
+      <p class="text-left" id="priceBTC" style="font-weight: bold"></p>
       <script>
         // set the dimensions and margins of the graph
         var margin = {top: 10, right: 30, bottom: 30, left: 10},
               width = 280 - margin.left - margin.right,
               height = 230 - margin.top - margin.bottom;
-          
+        
         // append the svg object to the body of the page
         var svg1 = d3.select("#BTCGraph")
           .append("svg")
@@ -84,13 +140,13 @@
             var p1 = d3.select("#typeBTC")
               .text(`비트코인(BTC/KRW)`)
             var p2 = d3.select("#priceBTC")  
-              .text(`현재가: ${data[0].value}원`)
-        })    
+              .text(`현재가: ${numberWithCommas(data[0].value)}원`)
+        })
       </script>
     </div>
     <div class="row-md-3 mx-auto" id="ETHGraph">
-      <p class="text-left" id="typeETH" style="margin-bottom: -0.3rem; font-size: 0.8rem;"></p>
-      <p class="text-left" id="priceETH"></p>
+      <p class="text-left" id="typeETH" style="margin-bottom: -0.05rem; font-size: 0.8rem; color:gray;"></p>
+      <p class="text-left" id="priceETH" style="font-weight: bold;"></p>
       <script>
         // set the dimensions and margins of the graph
         var margin = {top: 10, right: 30, bottom: 30, left: 10},
@@ -145,14 +201,14 @@
             var p1 = d3.select("#typeETH")
               .text(`이더리움(ETH/KRW)`)
             var p2 = d3.select("#priceETH")  
-              .text(`현재가: ${data[0].value}원`)
+              .text(`현재가: ${numberWithCommas(data[0].value)}원`)
         
         })    
       </script>
     </div>
     <div class="row-md-3 mx-auto" id="EOSGraph">
-      <p class="text-left" id="typeEOS" style="margin-bottom: -0.3rem; font-size: 0.8rem;"></p>
-      <p class="text-left" id="priceEOS"></p>
+      <p class="text-left" id="typeEOS" style="margin-bottom: -0.05rem; font-size: 0.8rem; color:gray;"></p>
+      <p class="text-left" id="priceEOS" style="font-weight: bold;"></p>
 
       <script>
         // set the dimensions and margins of the graph
@@ -208,14 +264,14 @@
             var p1 = d3.select("#typeEOS")
               .text(`이오스(EOS/KRW)`)
             var p2 = d3.select("#priceEOS")  
-              .text(`현재가: ${data[0].value}원`)
+              .text(`현재가: ${numberWithCommas(data[0].value)}원`)
         
         })    
       </script>
     </div>
     <div class="row-md-3 mx-auto" id="XRPGraph">
-      <p class="text-left" id="typeXRP" style="margin-bottom: -0.3rem; font-size: 0.8rem;"></p>
-      <p class="text-left" id="priceXRP"></p>
+      <p class="text-left" id="typeXRP" style="margin-bottom: -0.05rem; font-size: 0.8rem; color:gray;"></p>
+      <p class="text-left" id="priceXRP" style="font-weight: bold;"></p>
 
       <script>
         // set the dimensions and margins of the graph
@@ -271,7 +327,7 @@
             var p1 = d3.select("#typeXRP")
               .text(`리플(XRP/KRW)`)
             var p2 = d3.select("#priceXRP")  
-              .text(`현재가: ${data[0].value}원`)
+              .text(`현재가: ${numberWithCommas(data[0].value)}원`)
     
         })    
       </script>
@@ -282,15 +338,16 @@
 
 <!-- 화폐 정보를 담은 테이블 -->
   <div style="padding-top: 2rem">
-    <h4>코인 테이블</h4>
-    <table class="table table-striped">
+    <p style="padding-bottom: 1rem; font-size: 20px; font-weight: bold;">업비트 코인 거래</p>
+    <table class="table table-striped" style="text-align: center;">
       <thead>
-        <tr>
+        <tr style="color: gray; font-size: 13px;">
           <th scope="col">코인명</th>
           <th scope="col">시가</th>
-          <th scope="col">최고가</th>
-          <th scope="col">최저가</th>
-          <th scope="col">종가</th>
+          <th scope="col">전일대비(24h)</th>
+          <th scope="col">최고가(24h)</th>
+          <th scope="col">최저가(24h)</th>
+          <th scope="col">종가(24h)</th>
         </tr>
       </thead>
       <tbody>
@@ -332,31 +389,57 @@
     
     function writeData(data, currency) {
       var allRows = data.split(/\r?\n|\r/);
+      var coinName = {
+        BTC: "비트코인",
+        ETH: "이더리움",
+        EOS: "이오스",
+        XRP: "리플"
+      };
       var todayData = allRows[1].split(',');
-      var row = `<td>${currency}/KRW</td>`;
+      var yesterdayPrice = allRows[2].split(',')[1]
+      var row = `
+        <td>
+          <div style="font-size: 13px; font-weight: bold">${currency}/KRW</div>
+          <div style="font-size: 12px; color: gray;">${coinName[currency]}</div>
+        </td>`;
       for (var i = 1; i < todayData.length; i++) {
-        row += `<td>${todayData[i]}</td>`
+        row += `<td style="vertical-align: middle; font-size: 13px; font-weight: bold;">${numberWithCommas(todayData[i])}</td>`
+        if (i === 1) {
+          row += fluctuation(todayData[i], yesterdayPrice)
+        }
       };
       $(`#${currency}Info`).append(row);
+    }
+
+    function fluctuation(today, yesterday) {
+      var value = ((today - yesterday) / yesterday) * 100;
+      if (value > 0) {
+        return `<td style="color: red; vertical-align: middle; font-size: 13px; font-weight: bold;">+${value.toFixed(2)}%</td>`
+      } else {
+        return `<td style="color: blue; vertical-align: middle; font-size: 13px; font-weight: bold;">${value.toFixed(2)}%</td>`
+      }
+    }
+    function numberWithCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
   </script>
 <!-- 화폐 정보를 담은 테이블 끝 -->
 
 <!-- 암호화폐 소식란 -->
-  <div class="jumbotron" style="padding-right: 4rem;">
-    <h1>관련 소식 내용 등</h1>
-    <p>서브 타이틀</p>
+<div class="jumbotron" style="padding-right: 4rem;">
+  <h1>관련 소식 내용 등</h1>
+  <p>서브 타이틀</p>
 
-    <h2>Variable</h2>
-    <p><%= tagline %></p>
+  <h2>Variable</h2>
+  <p><%= tagline %></p>
 
-    <h2>Loop</h2>
-    <ul>
-        <% drinks.forEach(function(drink) { %>
-            <li><%= drink.name %> - <%= drink.drunkness %></li>
-        <% }); %>
-    </ul>
-  </div>
+  <h2>Loop</h2>
+  <ul>
+      <% drinks.forEach(function(drink) { %>
+          <li><%= drink.name %> - <%= drink.drunkness %></li>
+      <% }); %>
+  </ul>
+</div>
 <!-- 암호화폐 소식란 끝 -->
 
 <!-- 프로젝트 설명 -->

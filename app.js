@@ -5,6 +5,7 @@ const expressLayouts = require('express-ejs-layouts');
 const helmet = require('helmet');
 const compression = require('compression');
 const pageRouter = require('./routes/pages');
+const feedRouter = require('./routes/feed');
 const fs = require('fs');
 const log4js = require('log4js');
 const favicon = require('serve-favicon');
@@ -70,7 +71,7 @@ app.get('/', (req, res) => {
     res.render('index.ejs', {
         drinks: drinks,
         tagline: tagline,
-        title: 'mainPage'
+        title: 'mainPage' 
     });
 });
 
@@ -109,9 +110,9 @@ app.get('/XRP.csv', (req, res) => {
         res.status(200).send(data);
     });
 });
+
 app.use('/', pageRouter);
-
-
+app.use('/feed', feedRouter);
 
 app.use((req, res, next) => {
     let err = new Error('Not Found!');

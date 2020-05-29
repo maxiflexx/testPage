@@ -9,4 +9,5 @@ router.get('/:pageId', (req, res, next) => {
     pageController.show(req, res, next);
 });
 
+
 module.exports = router;
