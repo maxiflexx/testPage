@@ -80,12 +80,18 @@
 <main style="padding: 2rem;">
 <!-- 화폐별 간단한 그래프 -->
 <div class="container-fluid text-center">
-  <!-- <h4 class="text-left">오늘의 주요 시세</h4> -->
   <p class="text-left" style="font-size: 20px; font-weight: bold;">오늘의 주요 시세</p>
   <div class="row" style="padding-top: 2rem;">
-    <div class="row-md-3 mx-auto" id="BTCGraph">
-      <p class="text-left" id="typeBTC" style="margin-bottom: -0.05rem; font-size: 0.8rem; color:gray;"></p>
-      <p class="text-left" id="priceBTC" style="font-weight: bold"></p>
+    <div class="col-md-3 mx-auto" id="BTCGraph">
+      <div class="row">
+        <div class="col-md-8 text-left">
+          <div id="typeBTC" style="margin-bottom: -0.05rem; font-size: 0.8rem; color:gray;"></div>
+          <div id="priceBTC" style="font-weight: bold"></div>
+        </div>
+        <div class="col-md-4 text-right" style="display: flex; flex-direction: column-reverse;">
+            <div class="text-center" id="BTCFluctuation" style="color: white; border-radius: 0.5em;"></div>
+        </div>
+      </div>
       <script>
         // set the dimensions and margins of the graph
         var margin = {top: 10, right: 30, bottom: 30, left: 10},
@@ -137,16 +143,33 @@
                 .x(function(d) { return x(d.date) })
                 .y(function(d) { return y(d.value) })
                 )
-            var p1 = d3.select("#typeBTC")
+            var div1 = d3.select("#typeBTC")
               .text(`비트코인(BTC/KRW)`)
-            var p2 = d3.select("#priceBTC")  
+            var div2 = d3.select("#priceBTC")  
               .text(`현재가: ${numberWithCommas(data[0].value)}원`)
+            var value = ((data[0].value - data[1].value) / data[1].value) * 100
+            var div3 = d3.select("#BTCFluctuation")
+            if (value >= 0) {
+              console.log(value)
+              div3.style("background-color", "red")
+                .text(`+${value.toFixed(2)}%`)
+            } else {
+              div3.style("background-color", "blue")
+                .text(`${value.toFixed(2)}%`)
+            };
         })
       </script>
     </div>
-    <div class="row-md-3 mx-auto" id="ETHGraph">
-      <p class="text-left" id="typeETH" style="margin-bottom: -0.05rem; font-size: 0.8rem; color:gray;"></p>
-      <p class="text-left" id="priceETH" style="font-weight: bold;"></p>
+    <div class="col-md-3 mx-auto" id="ETHGraph">
+      <div class="row">
+        <div class="col-md-8 text-left">
+          <div id="typeETH" style="margin-bottom: -0.05rem; font-size: 0.8rem; color:gray;"></div>
+          <div id="priceETH" style="font-weight: bold;"></div>
+        </div>
+        <div class="col-md-4 text-right" style="display: flex; flex-direction: column-reverse;">
+          <div class="text-center" id="ETHFluctuation" style="color: white; border-radius: 0.5em;"></div>
+        </div>
+      </div>
       <script>
         // set the dimensions and margins of the graph
         var margin = {top: 10, right: 30, bottom: 30, left: 10},
@@ -198,18 +221,33 @@
                 .x(function(d) { return x(d.date) })
                 .y(function(d) { return y(d.value) })
                 )
-            var p1 = d3.select("#typeETH")
+            var div1 = d3.select("#typeETH")
               .text(`이더리움(ETH/KRW)`)
-            var p2 = d3.select("#priceETH")  
+            var div2 = d3.select("#priceETH")  
               .text(`현재가: ${numberWithCommas(data[0].value)}원`)
-        
+            var value = ((data[0].value - data[1].value) / data[1].value) * 100
+            var div3 = d3.select("#ETHFluctuation")
+            if (value >= 0) {
+              console.log(value)
+              div3.style("background-color", "red")
+                .text(`+${value.toFixed(2)}%`)
+            } else {
+              div3.style("background-color", "blue")
+                .text(`${value.toFixed(2)}%`)
+            };
         })    
       </script>
     </div>
-    <div class="row-md-3 mx-auto" id="EOSGraph">
-      <p class="text-left" id="typeEOS" style="margin-bottom: -0.05rem; font-size: 0.8rem; color:gray;"></p>
-      <p class="text-left" id="priceEOS" style="font-weight: bold;"></p>
-
+    <div class="col-md-3 mx-auto" id="EOSGraph">
+      <div class="row">
+        <div class="col-md-8 text-left">
+          <div id="typeEOS" style="margin-bottom: -0.05rem; font-size: 0.8rem; color:gray;"></div>
+          <div id="priceEOS" style="font-weight: bold;"></div>
+        </div>
+        <div class="col-md-4 text-right" style="display: flex; flex-direction: column-reverse;">
+          <div class="text-center" id="EOSFluctuation" style="color: white; border-radius: 0.5em;"></div>
+        </div>
+      </div>
       <script>
         // set the dimensions and margins of the graph
         var margin = {top: 10, right: 30, bottom: 30, left: 10},
@@ -261,18 +299,33 @@
                 .x(function(d) { return x(d.date) })
                 .y(function(d) { return y(d.value) })
                 )
-            var p1 = d3.select("#typeEOS")
+            var div1 = d3.select("#typeEOS")
               .text(`이오스(EOS/KRW)`)
-            var p2 = d3.select("#priceEOS")  
+            var div2 = d3.select("#priceEOS")  
               .text(`현재가: ${numberWithCommas(data[0].value)}원`)
-        
+            var value = ((data[0].value - data[1].value) / data[1].value) * 100
+            var div3 = d3.select("#EOSFluctuation")
+            if (value >= 0) {
+              console.log(value)
+              div3.style("background-color", "red")
+                .text(`+${value.toFixed(2)}%`)
+            } else {
+              div3.style("background-color", "blue")
+                .text(`${value.toFixed(2)}%`)
+            };
         })    
       </script>
     </div>
-    <div class="row-md-3 mx-auto" id="XRPGraph">
-      <p class="text-left" id="typeXRP" style="margin-bottom: -0.05rem; font-size: 0.8rem; color:gray;"></p>
-      <p class="text-left" id="priceXRP" style="font-weight: bold;"></p>
-
+    <div class="col-md-3 mx-auto" id="XRPGraph">
+      <div class="row">
+        <div class="col-md-8 text-left">
+          <div id="typeXRP" style="margin-bottom: -0.05rem; font-size: 0.8rem; color:gray;"></div>
+          <div id="priceXRP" style="font-weight: bold;"></div>  
+        </div>
+        <div class="col-md-4 text-right" style="display: flex; flex-direction: column-reverse;">
+          <div class="text-center" id="XRPFluctuation" style="color: white; border-radius: 0.5em;"></div>
+        </div>
+      </div>
       <script>
         // set the dimensions and margins of the graph
         var margin = {top: 10, right: 30, bottom: 30, left: 10},
@@ -324,11 +377,20 @@
                 .x(function(d) { return x(d.date) })
                 .y(function(d) { return y(d.value) })
                 )
-            var p1 = d3.select("#typeXRP")
+            var div1 = d3.select("#typeXRP")
               .text(`리플(XRP/KRW)`)
-            var p2 = d3.select("#priceXRP")  
+            var div2 = d3.select("#priceXRP")  
               .text(`현재가: ${numberWithCommas(data[0].value)}원`)
-    
+            var value = ((data[0].value - data[1].value) / data[1].value) * 100
+            var div3 = d3.select("#XRPFluctuation")
+            if (value >= 0) {
+              console.log(value)
+              div3.style("background-color", "red")
+                .text(`+${value.toFixed(2)}%`)
+            } else {
+              div3.style("background-color", "blue")
+                .text(`${value.toFixed(2)}%`)
+            };
         })    
       </script>
     </div>
@@ -424,23 +486,6 @@
     }
   </script>
 <!-- 화폐 정보를 담은 테이블 끝 -->
-
-<!-- 암호화폐 소식란 -->
-<div class="jumbotron" style="padding-right: 4rem;">
-  <h1>관련 소식 내용 등</h1>
-  <p>서브 타이틀</p>
-
-  <h2>Variable</h2>
-  <p><%= tagline %></p>
-
-  <h2>Loop</h2>
-  <ul>
-      <% drinks.forEach(function(drink) { %>
-          <li><%= drink.name %> - <%= drink.drunkness %></li>
-      <% }); %>
-  </ul>
-</div>
-<!-- 암호화폐 소식란 끝 -->
 
 <!-- 프로젝트 설명 -->
   <div class="text-center" style="padding: 2rem">
