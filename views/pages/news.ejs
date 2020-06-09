@@ -1,11 +1,68 @@
 <main style="padding: 2rem;">
-    <div class="jumbotron" style="margin-top: 2.4rem">
-        funds!!
+    <ul class="nav nav-tabs" style="margin-bottom: 20px;">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#news">News</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#analysis">Analysis</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane fade show active" id="news">
+            <div class="container" id="newsFeed">
+
+            </div>
+        </div>
+        <div class="tab-pane fade" id="analysis">
+            <div class="container" id="analysisFeed">
+
+            </div>
+        </div>
     </div>
-    <div class="jumbotron" style="margin-top: 2.4rem">
-        funds!!
-    </div>
-    <div class="jumbotron" style="margin-top: 2.4rem">
-        funds!!
-    </div>
+    <script type="text/javascript">
+        axios.post('/feed/news')
+            .then((res) => {
+                writeFeed(res.data, '#newsFeed');
+            }).catch((err) => {
+                alert(err);
+            })
+        
+        axios.post('/feed/analysis')
+            .then((res) => {
+                writeFeed(res.data, '#analysisFeed');
+            }).catch((err) => {
+                alert(err);
+            })
+
+        function writeFeed(items, feedId) {
+            for (var i = 0; i < items.length; i += 2) {
+                var item = ''
+                item += `
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a href="${items[i].link[0]}" style="color: black;">
+                                    <img src="${items[i].enclosure[0].$.url}" alt="" style="width: 90%">
+                                    <div style="padding-top: 1rem; font-size: 100%; font-weight: bold; color: black;">${items[i].title[0]}</div>
+                                    <div style="font-size: 80%; color: gray">${moment(items[i].pubDate[0]).format('YYYY-MM-DD')} | ${writerParse(items[i]['dc:creator'][0])}</div>
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="${items[i + 1].link[0]}" style="color: black;">
+                                    <img src="${items[i + 1].enclosure[0].$.url}" alt="" style="width: 90%">
+                                    <div style="padding-top: 1rem; font-size: 100%; font-weight: bold; color: black;">${items[i + 1].title[0]}</div>
+                                    <div style="font-size: 80%; color: gray">${moment(items[i + 1].pubDate[0]).format('YYYY-MM-DD')} | ${writerParse(items[i + 1]['dc:creator'][0])}</div>
+                                </a>
+                            </div>
+                        </div>
+                    <hr>
+                    `
+            $(feedId).append(item);
+            }
+        }
+
+        function writerParse(strData) {
+            var temp = strData.split(' ')
+            return `${temp[1]} ${temp[2]} ${temp[3]}`
+        }
+      </script>
 </main>
