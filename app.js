@@ -102,6 +102,15 @@ app.get('/XRP.csv', (req, res) => {
     });
 });
 
+app.get('/FTSE.csv', (req, res) => {
+    fs.readFile('./data/FTSE.csv', 'utf8', (err, data) => {
+        if (err) {
+            console.log(err)
+        }
+        res.status(200).send(data);
+    });
+});
+
 app.use('/', pageRouter);
 app.use('/feed', feedRouter);
 
