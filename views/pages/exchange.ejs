@@ -4,95 +4,258 @@
 
         <!-- Content Column -->
         <div class="col-lg-9 mb-6">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold">비트코인(BTC/KRW)</h6>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-6 col-sm-6">
-                            <div>
-                                11,000,000원
-                            </div>
-                            <div>
-                                ^50,000(0.21%)
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-sm-2" style="border-left: 1px solid gray;">
-                            <div>
-                                최고가
-                            </div>
-                            <div>
-                                11,500,000
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-BTC" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <div class="row" style="align-items: center;">
+                                <div class="col-lg-1 col-sm-1">
+                                    <img src="images/btc.png" alt="" style="width: 30px">
+                                </div>
+                                <div class="col-lg-11 col-sm-11" style="margin-left: -35px;">
+                                    <h6 class="m-0 font-weight-bold">비트코인(BTC/KRW)</h6>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-2 col-sm-2" style="border-left: 1px solid gray;">
-                            <div>
-                                최저가
-                            </div>
-                            <div>
-                                10,500,000
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-sm-2" style="border-left: 1px solid gray;">
-                            <div>
-                                거래대금
-                            </div>
-                            <div>
-                                411,500,000
+                        <div class="card-body">
+                            <div class="row" style="align-items: center;">
+                                <div class="col-lg-6 col-sm-6" id="BTCinfo">
+                                    <div id="BTCcurrentPrice" style="font-size: 1.2rem; font-weight: bold;">
+                                    </div>
+                                    <div id="BTCdiff">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-2" style="border-left: 1px solid rgba(0,0,0,.2);">
+                                    <div style="color: gray; font-size: 12px;">
+                                        최고가(24h)
+                                    </div>
+                                    <div id="BTCmaxPrice" style="font-size: 13px; font-weight: bold">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-2" style="border-left: 1px solid rgba(0,0,0,.2);">
+                                    <div style="color: gray; font-size: 12px;">
+                                        최저가(24h)
+                                    </div>
+                                    <div id="BTCminPrice" style="font-size: 13px; font-weight: bold">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-2" style="border-left: 1px solid rgba(0,0,0,.2);">
+                                    <div style="color: gray; font-size: 12px;">
+                                        거래대금(24h)
+                                    </div>
+                                    <div id="BTCvolume" style="font-size: 13px; font-weight: bold">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-                
 
-            <!-- Project Card Example -->
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold">Candle Chart</h6>
-                </div>
-                <div class="card-body">
-                    <div class="tab-content" id="v-pills-tabContent">
-                        <div class="tab-pane fade show active" id="v-pills-BTC" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold">Candle Chart</h6>
+                        </div>
+                        <div class="card-body">
                             <div id="BTCcandleChart"></div>
                         </div>
-                        <div class="tab-pane fade" id="v-pills-ETH" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                    </div>
+
+                </div>
+                <div class="tab-pane fade" id="v-pills-ETH" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <div class="row" style="align-items: center;">
+                                <div class="col-lg-1">
+                                    <img src="images/eth.png" alt="" style="width: 30px">
+                                </div>
+                                <div class="col-lg-11" style="margin-left: -35px;">
+                                    <h6 class="m-0 font-weight-bold">이더리움(ETH/KRW)</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row" style="align-items: center;">
+                                <div class="col-lg-6 col-sm-6" id="ETHinfo">
+                                    <div id="ETHcurrentPrice" style="font-size: 1.2rem; font-weight: bold;">
+                                    </div>
+                                    <div id="ETHdiff">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-2" style="border-left: 1px solid rgba(0,0,0,.2);">
+                                    <div style="color: gray; font-size: 12px;">
+                                        최고가
+                                    </div>
+                                    <div id="ETHmaxPrice" style="font-size: 13px; font-weight: bold">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-2" style="border-left: 1px solid rgba(0,0,0,.2);">
+                                    <div style="color: gray; font-size: 12px;">
+                                        최저가
+                                    </div>
+                                    <div id="ETHminPrice" style="font-size: 13px; font-weight: bold">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-2" style="border-left: 1px solid rgba(0,0,0,.2);">
+                                    <div style="color: gray; font-size: 12px;">
+                                        거래대금
+                                    </div>
+                                    <div id="ETHvolume" style="font-size: 13px; font-weight: bold">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold">Candle Chart</h6>
+                        </div>
+                        <div class="card-body">
                             <div id="ETHcandleChart"></div>
                         </div>
-                        <div class="tab-pane fade" id="v-pills-EOS" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="v-pills-EOS" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <div class="row" style="align-items: center;">
+                                <div class="col-lg-1">
+                                    <img src="images/eos.png" alt="" style="width: 30px">
+                                </div>
+                                <div class="col-lg-11" style="margin-left: -35px;">
+                                    <h6 class="m-0 font-weight-bold">이오스(EOS/KRW)</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row" style="align-items: center;">
+                                <div class="col-lg-6 col-sm-6" id="EOSinfo">
+                                    <div id="EOScurrentPrice" style="font-size: 1.2rem; font-weight: bold;">
+                                    </div>
+                                    <div id="EOSdiff">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-2" style="border-left: 1px solid rgba(0,0,0,.2);">
+                                    <div style="color: gray; font-size: 12px;">
+                                        최고가
+                                    </div>
+                                    <div id="EOSmaxPrice" style="font-size: 13px; font-weight: bold">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-2" style="border-left: 1px solid rgba(0,0,0,.2);">
+                                    <div style="color: gray; font-size: 12px;">
+                                        최저가
+                                    </div>
+                                    <div id="EOSminPrice" style="font-size: 13px; font-weight: bold">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-2" style="border-left: 1px solid rgba(0,0,0,.2);">
+                                    <div style="color: gray; font-size: 12px;">
+                                        거래대금
+                                    </div>
+                                    <div id="EOSvolume" style="font-size: 13px; font-weight: bold">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold">Candle Chart</h6>
+                        </div>
+                        <div class="card-body">
                             <div id="EOScandleChart"></div>
                         </div>
-                        <div class="tab-pane fade" id="v-pills-XRP" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="v-pills-XRP" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <div class="row" style="align-items: center;">
+                                <div class="col-lg-1">
+                                    <img src="images/xrp.png" alt="" style="width: 30px">
+                                </div>
+                                <div class="col-lg-11" style="margin-left: -35px;">
+                                    <h6 class="m-0 font-weight-bold">리플(XRP/KRW)</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row" style="align-items: center;">
+                                <div class="col-lg-6 col-sm-6" id="XRPinfo">
+                                    <div id="XRPcurrentPrice" style="font-size: 1.2rem; font-weight: bold;">
+                                    </div>
+                                    <div id="XRPdiff">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-2" style="border-left: 1px solid rgba(0,0,0,.2);">
+                                    <div style="color: gray; font-size: 12px;">
+                                        최고가
+                                    </div>
+                                    <div id="XRPmaxPrice" style="font-size: 13px; font-weight: bold">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-2" style="border-left: 1px solid rgba(0,0,0,.2);">
+                                    <div style="color: gray; font-size: 12px;">
+                                        최저가
+                                    </div>
+                                    <div id="XRPminPrice" style="font-size: 13px; font-weight: bold">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-2" style="border-left: 1px solid rgba(0,0,0,.2);">
+                                    <div style="color: gray; font-size: 12px;">
+                                        거래대금
+                                    </div>
+                                    <div id="XRPvolume" style="font-size: 13px; font-weight: bold">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold">Candle Chart</h6>
+                        </div>
+                        <div class="card-body">
                             <div id="XRPcandleChart"></div>
                         </div>
                     </div>
                 </div>
             </div>
-        
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold">매수하기 / 매도하기</h6>
+
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="card shadow">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold">일일 거래</h6>
+                        </div>
+                        <div class="card-body">
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <form action="">
-                        <div>
-                            <label for="price">가격:</label>
-                            <input type="text" id="price" />
+                <div class="col-lg-6 mb-4">
+                    <div class="card shadow">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold">매수하기 / 매도하기</h6>
                         </div>
-                        <div>
-                            <label for="amount">수량:</label>
-                            <input type="email" id="amount" />
+                        <div class="card-body">
+                            <form action="">
+                                <div>
+                                    <label for="price">가격:</label>
+                                    <input type="text" id="price" />
+                                </div>
+                                <div>
+                                    <label for="amount">수량:</label>
+                                    <input type="email" id="amount" />
+                                </div>
+                                <div>
+                                    <label for="total">합계:</label>
+                                    <textarea id="total"></textarea>
+                                </div>
+                            </form>
                         </div>
-                        <div>
-                            <label for="total">합계:</label>
-                            <textarea id="total"></textarea>
-                        </div>
-                    </form>
-                    
+                    </div>
                 </div>
             </div>
-    </div>
+        </div>
         
         <div class="col-lg-3 mb-2">        
             <!-- Illustrations -->
@@ -101,7 +264,7 @@
                     <h6 class="m-0 font-weight-bold">암호화폐 종류</h6>
                 </div>
                 <div class="card-body">
-                    <div class="row">
+                    <div class="row" style="color: gray; font-size: 12px; text-align: center;">
                         <div class="col-lg-6 col-sm6">
                             코인명
                         </div>
@@ -109,11 +272,11 @@
                             현재가
                         </div>
                     </div>
-                    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="text-align: center;">
                         <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-BTC" role="tab" aria-controls="v-pills-home" aria-selected="true">
-                            <div class="row">
+                            <div class="row" style="align-items: center;">
                                 <div class="col-lg-6 col-sm-6">
-                                    <div>
+                                    <div class="krw">
                                         BTC/KRW
                                     </div>
                                     <div>
@@ -126,9 +289,9 @@
                             </div>
                         </a>
                         <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-ETH" role="tab" aria-controls="v-pills-profile" aria-selected="false">
-                            <div class="row">
+                            <div class="row" style="align-items: center;">
                                 <div class="col-lg-6 col-sm-6">
-                                    <div>
+                                    <div class="krw">
                                         ETH/KRW
                                     </div>
                                     <div>
@@ -141,9 +304,9 @@
                             </div>
                         </a>
                         <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-EOS" role="tab" aria-controls="v-pills-messages" aria-selected="false">
-                            <div class="row">
+                            <div class="row" style="align-items: center;">
                                 <div class="col-lg-6 col-sm-6">
-                                    <div>
+                                    <div class="krw">
                                         EOS/KRW
                                     </div>
                                     <div>
@@ -156,9 +319,9 @@
                             </div>
                         </a>
                         <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-XRP" role="tab" aria-controls="v-pills-settings" aria-selected="false">
-                            <div class="row">
+                            <div class="row" style="align-items: center;">
                                 <div class="col-lg-6 col-sm-6">
-                                    <div>
+                                    <div class="krw">
                                         XRP/KRW
                                     </div>
                                     <div>
@@ -190,6 +353,7 @@
         function drawChart(currency, rs) {
             d3.csv(`${currency}.csv`, 
                 function (prices) {
+
                     for (var i = 0; i < prices.length; i++) {
                         var dateFormat = d3.timeParse("%Y-%m-%d");
                         prices[i]['Date'] = dateFormat(prices[i]['Date'])
@@ -262,10 +426,22 @@
                         .attr("y2", function(d){return yScale(d.Low);})
                         .attr("stroke", function(d){return d.Open > d.Close ? "red" : "green"; })
 
+                    d3.select(`#${currency}currentPrice`)
+                        .text(`${numberWithCommas(prices[0]['Open'])} 원`);
+                    
+                    d3.select(`#${currency}maxPrice`)
+                        .text(`${numberWithCommas(prices[0]['High'])}`);
+
+                    d3.select(`#${currency}minPrice`)
+                        .text(`${numberWithCommas(prices[0]['Low'])}`);
+
+                    d3.select(`#${currency}volume`)
+                        .text(`${numberWithCommas(Math.round(prices[0]['Volume']))}`);
+                    writeDiff(currency, prices[0]['Open'], prices[1]['Open'])
                 }
             )}
 
-        function getShortMonth(date){
+        function getShortMonth(date) {
             var month = date.getMonth()
             months = {0 : 'Jan', 1 : 'Feb', 2 : 'Mar', 3 : 'Apr', 4 : 'May', 5 : 'Jun', 6 : 'Jul', 7 : 'Aug', 8 : 'Sep', 9 : 'Oct', 10 : 'Nov', 11 : 'Dec'}
 
@@ -276,7 +452,21 @@
                 return months[month]
             }
         }
-
+        function writeDiff(type, today, yesterday) {
+            var sub = today - yesterday;
+            var diff = d3.select(`#${type}diff`);
+            var info = d3.select(`#${type}info`);
+            if (sub > 0) {
+                diff.html(`&#9652;${numberWithCommas(sub)} (${((sub / yesterday) * 100).toFixed(2)}%)`);
+                info.style("color", "red");
+            } else {
+                diff.html(`&#9662;${numberWithCommas(Math.abs(sub))} (${((sub / yesterday) * 100).toFixed(2)}%)`);
+                info.style("color", "blue")
+            }
+        }
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
         drawChart('BTC', 1000000);
         drawChart('ETH', 10000);
         drawChart('EOS', 100);

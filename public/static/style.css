@@ -193,3 +193,72 @@ footer .main-footer {
     transition: all 250ms ease-in-out 0s;
   }
   
+  #v-pills-tab .active 
+  {
+    background-color: #343A40;
+    color: white;
+  }
+
+  #v-pills-tab a
+  {
+    height: 60px;
+    color: black;
+    font-size: 13px;
+    font-weight: bold;
+  }
+
+  #v-pills-tab a div
+  {
+    vertical-align: middle;
+  }
+
+  .krw
+  {
+    font-size: 12px;
+    color: gray;
+    font-weight: lighter;
+  }
+
+  input[name=code] {
+    width: 70%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    display: inline-block;
+    border: none;
+    background: #f1f1f1;
+  }
+
+  input[name="send"] {
+    width: 25%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    background-color: #343A40;
+    border: none;
+    color: white;
+    float: right;
+  }
+
+  input[name="register"] {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    background-color: #343A40;
+    border: none;
+    color: white;
+    float: right;
+  }
+
+  input[name=email], input[name=pwd], input[name=re_pwd], input[name=username], input[name=phone_number] {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    display: inline-block;
+    border: none;
+    background: #f1f1f1;
+  }
+  
+  input[name=email]:focus, input[name=pwd]:focus, input[name=re_pwd]:focus, input[name=username]:focus, input[name=code]:focus, input[name=phone_number]:focus {
+    background-color: #ddd;
+    outline: none;
+  }
+  

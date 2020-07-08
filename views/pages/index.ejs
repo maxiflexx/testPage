@@ -404,6 +404,7 @@
           <th scope="col">최고가(24h)</th>
           <th scope="col">최저가(24h)</th>
           <th scope="col">종가(24h)</th>
+          <th scope="col">거래량(24h)</th>
         </tr>
       </thead>
       <tbody>
@@ -476,6 +477,7 @@
       }
     }
     function numberWithCommas(x) {
+      x = Math.round(x)
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
   </script>
