@@ -238,7 +238,7 @@ footer .main-footer {
     float: right;
   }
 
-  input[name="register"] {
+  input[name="register"], input[name="login"] {
     width: 100%;
     padding: 15px;
     margin: 5px 0 22px 0;
