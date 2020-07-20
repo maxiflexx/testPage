@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -6,6 +8,7 @@ const helmet = require('helmet');
 const compression = require('compression');
 const pageRouter = require('./routes/pages');
 const feedRouter = require('./routes/feed');
+const authRouter = require('./routes/auth');
 const fs = require('fs');
 const log4js = require('log4js');
 const favicon = require('serve-favicon');
@@ -113,6 +116,7 @@ app.get('/FTSE.csv', (req, res) => {
 
 app.use('/', pageRouter);
 app.use('/feed', feedRouter);
+app.use('/auth', authRouter);
 
 app.use((req, res, next) => {
     let err = new Error('Not Found!');
