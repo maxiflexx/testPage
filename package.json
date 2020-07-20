@@ -16,6 +16,7 @@
     "d3": "^5.15.1",
     "dotenv": "^8.2.0",
     "ejs": "^3.0.1",
+    "email-validator": "^2.0.4",
     "express": "^4.17.1",
     "express-ejs-layouts": "^2.5.0",
     "helmet": "^3.22.0",
