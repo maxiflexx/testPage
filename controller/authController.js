@@ -1,8 +1,10 @@
 const db = require('../db/db');
 const validator = require('../lib/validator');
+const nodemailer = require('nodemailer');
+const authConfig = require('../config/auth');
 
 class AuthController {
-    register(req, res, next) {
+    register (req, res, next) {
         if (!(validator.email(req.body.email))) {
             res.send(`
                 <script type="text/javascript">
@@ -73,6 +75,48 @@ class AuthController {
                 };
             });
         };
+    };
+
+    mailSender (req, res, next) {
+        if (authConfig.auth.status === true) {
+            res.send(false);
+            return;
+        } else {
+            authConfig.auth.status = true;
+            authConfig.auth.code = req.body.code;
+            let transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: authConfig.gmail.id,
+                    pass: authConfig.gmail.pwd
+                }
+            });
+    
+            let mailOptions = {
+                from: authConfig.gmail.id,
+                to: req.body.email,
+                subject: 'Mailer Test',
+                html: `
+                    <p>Please click the link below.</p>
+                    <p>${authConfig.auth.code}</p>   
+                `
+            };
+    
+            transporter.sendMail(mailOptions, (err, info) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log('Email sent: ' + info.response);
+                }
+            });
+
+
+            console.log(req.body)
+            res.send(true);
+            return;
+        };
+        
+        
     };
 };
 

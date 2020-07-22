@@ -8,7 +8,7 @@
                 <label for="email"><b>이메일</b></label>
                 <input type="text" name="email" placeholder="Email" required>
                 <input type="text" name="code" placeholder="code" required>
-                <input type="button" name="send" onclick="alert('메일 전송!')" value="메일인증">
+                <input type="button" name="send" onclick="mailAuth()" value="메일인증">
                 <label for="pwd"><b>비밀번호</b></label>
                 <input type="password" name="pwd" placeholder="Password">
                 <label for="re_pwd"><b>비밀번호 재확인</b></label>
@@ -22,7 +22,22 @@
         </div>
     </div>
     <script>
-        // alert(Math.random().toString(36).substr(2,11));
+        function mailAuth() {
+            let data = {
+                email: $('input[name=email]').val(),
+                code: Math.random().toString(36).substr(2,11)
+            };
+            axios.post('/auth/mailSender', data)
+                .then((results) => {
+                    if (results.data === true) {
+                        alert('메일 발송!!!')
+                    } else {
+                        alert('발송 실패!!!');
+                    };
+                }).catch((err) => {
+                    console.log(err)
+                });
+        };
     </script>
 </main>
 

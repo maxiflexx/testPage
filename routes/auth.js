@@ -8,5 +8,10 @@ router.post('/register', (req, res, next) => {
     authController.register(req, res, next)
 });
 
+router.post('/mailSender', (req, res, next) => {
+    log.debug(`I'm in the auth module`);
+    authController.mailSender(req, res, next);
+})
+
 
 module.exports = router;
