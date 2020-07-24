@@ -3,3 +3,4 @@ log/
 data/
 .env
 config/auth.js
+config/oauth.json

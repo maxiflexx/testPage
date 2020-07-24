@@ -29,10 +29,11 @@
             };
             axios.post('/auth/mailSender', data)
                 .then((results) => {
-                    if (results.data === true) {
-                        alert('메일 발송!!!')
+                    if (results.data.status === true) {
+                        alert(results.data.message);
                     } else {
-                        alert('발송 실패!!!');
+                        alert(results.data.message);
+                        location.href = '/register';
                     };
                 }).catch((err) => {
                     console.log(err)
