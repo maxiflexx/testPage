@@ -13,5 +13,9 @@ router.post('/mailSender', (req, res, next) => {
     authController.mailSender(req, res, next);
 })
 
+router.post('/login', (req, res, next) => {
+    log.debug(`I'm in the auth module`);
+    authController.login(req, res, next);
+});
 
 module.exports = router;

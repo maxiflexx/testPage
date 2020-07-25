@@ -72,7 +72,8 @@ class AuthController {
                                         return;
                                     };
                                     console.log(req.body.email);
-                                    return res.redirect(301, '/');
+                                    res.redirect(301, '/');
+                                    return;
                             });
                         })
                         
@@ -145,6 +146,35 @@ class AuthController {
                 };
             });
         };
+    };
+
+    login (req, res, next) {
+        console.log('login_process')
+        db.query('SELECT * FROM user WHERE email = (?)', [req.body.email], function (error, results, fields) {
+            if (results.length === 0) {
+                res.send(`
+                    <script type="text/javascript">
+                        alert("메일을 바르게 입력하세요.");
+                        window.location.href = "/login";
+                    </script>`);
+                return;
+            } else {
+                bcrypt.compare(req.body.pwd, results[0].password, function (err, result) {
+                    if (result) {
+                        console.log('ok');
+                        res.redirect('/');
+                        return;
+                    } else {
+                        res.send(`
+                            <script type="text/javascript">
+                                alert("비밀번호를 바르게 입력하세요.");
+                                window.location.href = "/login";
+                            </script>`);
+                        return;
+                    };
+                });
+            };
+        });
     };
 };
 
