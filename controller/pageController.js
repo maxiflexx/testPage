@@ -10,7 +10,8 @@ class PageController {
 
         let pageName = filteredId + '.ejs'
         if(req.list.indexOf(pageName) !== -1) {
-            res.render(pageName, {title:filteredId});
+            console.log(req.session)
+            res.render(pageName, {title:filteredId, req: req});
         } else {
             let err = new Error('Something Broke!');
             err.status = 500;

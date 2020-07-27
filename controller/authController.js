@@ -149,7 +149,6 @@ class AuthController {
     };
 
     login (req, res, next) {
-        console.log('login_process')
         db.query('SELECT * FROM user WHERE email = (?)', [req.body.email], function (error, results, fields) {
             if (results.length === 0) {
                 res.send(`
@@ -161,9 +160,13 @@ class AuthController {
             } else {
                 bcrypt.compare(req.body.pwd, results[0].password, function (err, result) {
                     if (result) {
-                        console.log('ok');
-                        res.redirect('/');
-                        return;
+                        console.log(results)
+                        req.session.username = results[0].username;
+                        req.session.email = results[0].email;
+                        req.session.save(() => {
+                            res.redirect('/');
+                            return;
+                        })
                     } else {
                         res.send(`
                             <script type="text/javascript">
@@ -174,6 +177,13 @@ class AuthController {
                     };
                 });
             };
+        });
+    };
+
+    logout (req, res, next) {
+        req.session.destroy((err) => {
+            res.redirect(302, '/');
+            return;
         });
     };
 };

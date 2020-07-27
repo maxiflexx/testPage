@@ -13,7 +13,24 @@ const fs = require('fs');
 const log4js = require('log4js');
 const favicon = require('serve-favicon');
 const app = express();
-log4js.configure(__dirname + '/config/log4js.json')
+log4js.configure(__dirname + '/config/log4js.json');
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
+
+const sessionStore = new MySQLStore({
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
+});
+ 
+app.use(session({
+    secret: 'session_cookie_secret',
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: true
+}));
 
 const log = log4js.getLogger('app');
 
@@ -44,6 +61,8 @@ app.use(bodyParser.urlencoded({extended:false}));
 
 app.use(compression()); // 전송되는 데이터 압축
 
+
+
 app.use(favicon(path.join(__dirname, 'public/images', 'favicon.ico')));
 
 // 모든 요청에 대해 favicon.ico 무시
@@ -65,7 +84,8 @@ app.get('*', (req, res, next) => {
 
 app.get('/', (req, res) => {
     res.render('index.ejs', {
-        title:  'mainPage' 
+        title:  'mainPage', 
+        req: req
     });
 });
 
